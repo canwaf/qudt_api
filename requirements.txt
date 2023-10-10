@@ -1,0 +1,4 @@
+flask==1.1.2
+rdflib==5.0.0
+pint==0.17
+flask-restful==0.3.8

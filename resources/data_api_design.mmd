@@ -1,0 +1,21 @@
+
+    classDiagram
+        class FlaskApp{
+            +Flask app
+            +Api api
+            +__init__()
+            +run()
+        }
+        class UnitConverter{
+            +Pint.UnitRegistry ureg
+            +__init__()
+            +extend_unit(string: unit, float: scaling_factor, string: label) : Pint.Quantity
+        }
+        class RDFGenerator{
+            +rdflib.Graph graph
+            +__init__()
+            +generate_rdf(Pint.Quantity: unit) : string
+        }
+        FlaskApp -- UnitConverter : uses
+        FlaskApp -- RDFGenerator : uses
+    

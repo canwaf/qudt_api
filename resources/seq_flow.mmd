@@ -1,0 +1,10 @@
+
+    sequenceDiagram
+        participant F as FlaskApp
+        participant U as UnitConverter
+        participant R as RDFGenerator
+        F->>U: extend_unit(unit, scaling_factor, label)
+        U-->>F: new_unit
+        F->>R: generate_rdf(new_unit)
+        R-->>F: rdf_string
+    
