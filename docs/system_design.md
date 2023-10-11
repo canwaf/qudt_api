@@ -1,4 +1,6 @@
-## Implementation approach
+# Implementation approach
+
+TODO: This is hilarious, MetaGPT wrote this, and tbh not entirely wrong, but wrong enough to require a complete rewrite. I'll rewrite this later. Never used flask before this though.
 
 We will use the Flask framework to build the API, as it is lightweight and suitable for building APIs. We will use the rdflib library for generating RDF responses. For extending base QUDT units, we will use the pint library which provides a robust platform for working with units. We will use the flask-restful library to simplify the creation of API endpoints. The difficult points in the requirements are generating RDF responses and extending base QUDT units. We will overcome these by using the rdflib and pint libraries respectively.
 

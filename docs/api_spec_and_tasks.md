@@ -1,9 +1,9 @@
-## Required Python third-party packages
+# Required Python third-party packages
 
-- flask==1.1.2
-- rdflib==5.0.0
-- pint==0.17
-- flask-restful==0.3.8
+TODO: Finish rewriting this.
+
+- flask>2.0.0
+- rdflib==7.0.0
 
 ## Required Other language third-party packages
 
@@ -11,35 +11,135 @@
 
 ## Full API spec
 
-
-        openapi: 3.0.0
-        info:
-          title: QUDT API
-          version: 1.0.0
-        paths:
-          /extend_unit:
-            post:
-              summary: Extend a base QUDT unit
-              requestBody:
-                required: true
-                content:
-                  application/json:
-                    schema:
-                      type: object
-                      properties:
-                        unit:
-                          type: string
-                        scaling_factor:
-                          type: number
-                        label:
-                          type: string
-              responses:
-                '200':
-                  description: A RDF representation of the new unit
-                  content:
-                    application/xml:
-                      schema:
-                        type: string
+openapi: 3.0.0
+info:
+  title: Unit and Currency Conversion API
+  version: 1.0.0
+paths:
+  /unit/{unit}:
+    get:
+      summary: Get a unit conversion
+      parameters:
+        - in: path
+          name: unit
+          required: true
+          description: The unit to convert
+          schema:
+            type: string
+        - in: query
+          name: conversion_multiplier
+          required: false
+          description: The conversion multiplier to use
+          schema:
+            type: number
+        - in: query
+          name: label
+          required: false
+          description: The label to use for the converted value
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/rdf+xml:
+              schema:
+                type: string
+            application/rdf+json:
+              schema:
+                type: string
+            application/n-triples:
+              schema:
+                type: string
+            application/n-quads:
+              schema:
+                type: string
+            application/trig:
+              schema:
+                type: string
+            application/trix:
+              schema:
+                type: string
+            application/turtle:
+              schema:
+                type: string
+            application/x-turtle:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+  /currency/{currency}:
+    get:
+      summary: Get a currency conversion
+      parameters:
+        - in: path
+          name: currency
+          required: true
+          description: The currency to convert
+          schema:
+            type: string
+        - in: query
+          name: conversion_multiplier
+          required: false
+          description: The conversion multiplier to use
+          schema:
+            type: number
+        - in: query
+          name: label
+          required: false
+          description: The label to use for the converted value
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/rdf+xml:
+              schema:
+                type: string
+            application/rdf+json:
+              schema:
+                type: string
+            application/n-triples:
+              schema:
+                type: string
+            application/n-quads:
+              schema:
+                type: string
+            application/trig:
+              schema:
+                type: string
+            application/trix:
+              schema:
+                type: string
+            application/turtle:
+              schema:
+                type: string
+            application/x-turtle:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
     
 
 ## Logic Analysis

@@ -1,41 +1,35 @@
 ## app.py
 from flask import Flask, request
-from flask_restful import Api, Resource
-from unit_converter import UnitConverter
-from rdf_generator import RDFGenerator
+# from flask_restful import Api, Resource
+from qudt_api.qudt_extender import Unit, Currency
 
-class FlaskApp:
-    def __init__(self):
-        self.app = Flask(__name__)
-        self.api = Api(self.app)
-        self.unit_converter = UnitConverter()
-        self.rdf_generator = RDFGenerator()
-        self.setup_routes()
+app = Flask(__name__)
 
-    def setup_routes(self):
-        self.api.add_resource(ExtendUnit, "/extend_unit", resource_class_args=(self.unit_converter, self.rdf_generator))
+formats = ["json-ld", "n3", "nquads", "nt", "hext", "pretty-xml", "trig", "trix", "turtle", "longturtle", "xml"]
+    
+@app.route("/unit/<unit>", methods=["GET", "POST"])
+def unit(unit):
+    conversion_multiplier = request.args.get("conversion_multiplier")
+    label = request.args.get("label")
+    format = request.headers.get(key="Accept", default="json-ld")
+    if format == "*/*":
+        format = "json-ld"
+    if not format in formats:
+        return "Invalid format. Please use one of the following: json-ld, n3, nquads, nt, hext, pretty-xml, trig, trix, turtle, longturtle, xml.", 400
 
-    def run(self):
-        self.app.run(debug=True)
+    return Unit(unit, conversion_multiplier, label).graph.serialize(format=format), 200, {"Content-Type": f"application/rdf+{format}"}
 
-class ExtendUnit(Resource):
-    def __init__(self, unit_converter: UnitConverter, rdf_generator: RDFGenerator):
-        self.unit_converter = unit_converter
-        self.rdf_generator = rdf_generator
+@app.route("/currency/<currency>", methods=["GET", "POST"])
+def currency(currency):
+    conversion_multiplier = request.args.get("conversion_multiplier")
+    label = request.args.get("label")
+    format = request.headers.get(key="Accept", default="json-ld")
+    if format == "*/*":
+        format = "json-ld"
+    if not format in formats:
+        return "Invalid format. Please use one of the following: json-ld, n3, nquads, nt, hext, pretty-xml, trig, trix, turtle, longturtle, xml.", 400
 
-    def post(self):
-        unit = request.json.get('unit')
-        scaling_factor = request.json.get('scaling_factor')
-        label = request.json.get('label')
-
-        if not unit or not scaling_factor or not label:
-            return "Missing parameters: 'unit', 'scaling_factor', and 'label' are required.", 400
-
-        new_unit = self.unit_converter.extend_unit(unit, scaling_factor, label)
-        rdf_string = self.rdf_generator.generate_rdf(new_unit)
-
-        return rdf_string, 200, {'Content-Type': 'application/xml'}
+    return Currency(currency, conversion_multiplier, label).graph.serialize(format=format), 200, {"Content-Type": f"application/rdf+{format}"}
 
 if __name__ == "__main__":
-    app = FlaskApp()
-    app.run()
+    app.run(debug=True)

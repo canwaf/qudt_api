@@ -1,4 +1,6 @@
-## Original Requirements
+# Original Requirements
+
+TODO: More hilarious hallucinations from MetaGPT, I'll rewrite this later.
 
 Write a python flask API which extends base QUDT units using URL queries to add scaling_factor and labels, returning RDF responses of the new units.
 
